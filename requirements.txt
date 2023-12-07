@@ -17,3 +17,4 @@ scipy==1.10.1
 soundfile==0.12.1
 soxr==0.3.7
 threadpoolctl==3.2.0
+chardet==5.2.0
