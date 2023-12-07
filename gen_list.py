@@ -8,6 +8,7 @@ if __name__ == '__main__':
     paser.add_argument("-i", "--input_dir", default="dataset/VEGAS/dog/videos")
     paser.add_argument("-o", "--output_dir", default="filelists")
     paser.add_argument("-p", "--prefix", default="dog", choices=["dog", "fireworks", "baby", "drum", "gun", "sneeze", "cough", "hammer"])
+    # paser.add_argument("-p", "--prefix", default="dogs", choices=["dogs", "cats", "birds"])
     args = paser.parse_args()
     input_dir = args.input_dir
     output_dir = args.output_dir
@@ -16,6 +17,7 @@ if __name__ == '__main__':
     video_paths = glob(P.join(input_dir, "*.mp4"))
     video_paths.sort(key=lambda x: int(x.split('_')[-1].split(".")[0]))
     if args.prefix in ["dog", "fireworks", "baby", "drum"]:
+    # if args.prefix in ["dogs", "cats", "birds"]:
         n_test = 128
     else:
         n_test = 64

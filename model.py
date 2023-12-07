@@ -108,7 +108,8 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         x = x.transpose(1, 2)
-        z = torch.randn(x.shape[0], self.random_z_dim).to('cuda:0')
+        # z = torch.randn(x.shape[0], self.random_z_dim).to('cuda:0')  << cuda removed here
+        z = torch.randn(x.shape[0], self.random_z_dim)
         z = z.view(z.size(0), z.size(1), 1).expand(z.size(0), z.size(1), x.size(2))
         x = torch.cat([x, z], 1)
         for conv in self.convolutions:
@@ -319,9 +320,9 @@ class GANLoss(nn.Module):
 
 
 def init_net(net, device, init_type='normal', init_gain=0.02):
-    assert (torch.cuda.is_available())
-    net.to(device)
-    net = torch.nn.DataParallel(net, range(torch.cuda.device_count()))
+    # assert (torch.cuda.is_available())
+    # net.to(device)
+    # net = torch.nn.DataParallel(net, range(torch.cuda.device_count()))   << cuda removed here
     init_weights(net, init_type, gain=init_gain)
     return net
 
@@ -359,8 +360,10 @@ class Regnet(nn.Module):
         self.device = torch.device('cuda:0')
         self.netG = init_net(Regnet_G(), self.device)
         self.netD = init_net(Regnet_D(), self.device)
-        self.criterionGAN = GANLoss().to(self.device)
-        self.criterionL1 = RegnetLoss(config.loss_type).to(self.device)
+        # self.criterionGAN = GANLoss().to(self.device)                     << cuda removed here
+        self.criterionGAN = GANLoss()
+        # self.criterionL1 = RegnetLoss(config.loss_type).to(self.device)   << cuda removed here
+        self.criterionL1 = RegnetLoss(config.loss_type)
 
         self.optimizers = []
         self.optimizer_G = torch.optim.Adam(self.netG.parameters(),
@@ -375,8 +378,10 @@ class Regnet(nn.Module):
 
     def parse_batch(self, batch):
         input, mel, video_name = batch
-        self.real_A = input.to(self.device).float()
-        self.real_B = mel.to(self.device).float()
+        # self.real_A = input.to(self.device).float()       << cuda removed here
+        # self.real_B = mel.to(self.device).float()         << cuda removed here
+        self.real_A = input.float()
+        self.real_B = mel.float()
         self.video_name = video_name
 
     def forward(self):
@@ -425,7 +430,7 @@ class Regnet(nn.Module):
                 torch.save({"iteration": iteration,
                             "learning_rate": lr,
                             "optimizer_net{}".format(name): net.module.cpu().state_dict()}, filepath)
-                net.to(self.device)
+                # net.to(self.device)               << cuda removed here
             else:
                 torch.save({"iteration": iteration,
                             "learning_rate": lr,

@@ -14,7 +14,8 @@ from tsn.models import TSN
 
 class GroupScale(object):
     def __init__(self, size, interpolation=Image.BILINEAR):
-        self.worker = torchvision.transforms.Scale(size, interpolation)
+        # self.worker = torchvision.transforms.Scale(size, interpolation)
+        self.worker = torchvision.transforms.Resize(size, interpolation)
 
     def __call__(self, img_group):
         return [self.worker(img) for img in img_group]
@@ -153,7 +154,8 @@ if __name__ == '__main__':
             batch_size=1, shuffle=False,
             num_workers=1, pin_memory=True)
 
-    net = torch.nn.DataParallel(net).cuda()
+    # net = torch.nn.DataParallel(net).cuda()       << cuda removed here
+    net = torch.nn.DataParallel(net)
     net.eval()
     for i, (data, video_path) in enumerate(data_loader):
         os.makedirs(args.output_dir, exist_ok=True)

@@ -1,5 +1,8 @@
 
-soundlist=" "dog" "fireworks" "drum" "baby" "gun" "sneeze" "cough" "hammer" "
+# soundlist=" "dog" "fireworks" "drum" "baby" "gun" "sneeze" "cough" "hammer" "
+# soundlist=("dog" "fireworks" "drum" "baby" "gun" "sneeze" "cough" "hammer")
+soundlist=("dog")
+# soundlist=" "dogs" "cats" "birds" "
 
 for soundtype in $soundlist 
 do

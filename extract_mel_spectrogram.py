@@ -7,7 +7,7 @@ from multiprocessing import Pool
 from functools import partial
 from glob import glob
 
-mel_basis = librosa.filters.mel(22050, n_fft=1024, fmin=125, fmax=7600, n_mels=80)
+mel_basis = librosa.filters.mel(sr=22050, n_fft=1024, fmin=125, fmax=7600, n_mels=80)
 
 def get_spectrogram(audio_path, save_dir, length):
     wav, _ = librosa.load(audio_path, sr=None)

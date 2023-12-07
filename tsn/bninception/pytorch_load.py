@@ -10,7 +10,8 @@ class BNInception(nn.Module):
                        weight_url='https://yjxiong.blob.core.windows.net/models/bn_inception-9f5701afb96c8044.pth'):
         super(BNInception, self).__init__()
 
-        manifest = yaml.load(open(model_path))
+        # manifest = yaml.load(open(model_path))
+        manifest = yaml.safe_load(open(model_path))
 
         layers = manifest['layers']
 
