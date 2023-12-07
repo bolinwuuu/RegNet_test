@@ -154,8 +154,8 @@ if __name__ == '__main__':
             batch_size=1, shuffle=False,
             num_workers=1, pin_memory=True)
 
-    # net = torch.nn.DataParallel(net).cuda()       << cuda removed here
-    net = torch.nn.DataParallel(net)
+    net = torch.nn.DataParallel(net).cuda()       # << cuda removed here
+    # net = torch.nn.DataParallel(net)
     net.eval()
     for i, (data, video_path) in enumerate(data_loader):
         os.makedirs(args.output_dir, exist_ok=True)
